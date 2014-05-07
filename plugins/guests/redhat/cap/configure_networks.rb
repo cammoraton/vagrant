@@ -20,7 +20,13 @@ module VagrantPlugins
           # later.
           interfaces = Set.new
           networks.each do |network|
-            interface = interface_names[network[:interface]]
+            # If we didn't gather the interface name default to ethX
+            if interface_names.at(network[:interface]).nil?
+              interface = "eth#{network[:interface]}"
+            else
+              interface = interface_names[network[:interface]]
+            end
+            
             interfaces.add(interface)
             network[:device] = interface
             
